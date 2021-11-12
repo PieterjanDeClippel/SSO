@@ -14,16 +14,20 @@ namespace Sso.Central.Controllers
     {
         private readonly IIdentityServerInteractionService interaction;
         private readonly IEventService events;
+        private readonly IClientStore clientStore;
+
         //private readonly UserManager<IdentityUser> userManager;
         private readonly SignInManager<IdentityUser> signInManager;
         public AccountController(
             IIdentityServerInteractionService interaction,
             IEventService events,
+            IClientStore clientStore,
             //UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager)
         {
             this.interaction = interaction;
             this.events = events;
+            this.clientStore = clientStore;
             //this.userManager = userManager;
             this.signInManager = signInManager;
         }
@@ -41,7 +45,7 @@ namespace Sso.Central.Controllers
         }
 
         [HttpPost("Login")]
-        public async Task<IActionResult> LoginPost([FromBody] ViewModels.Account.LoginVM model)
+        public async Task<IActionResult> LoginPost([FromForm] ViewModels.Account.LoginVM model)
         {
             var context = await interaction.GetAuthorizationContextAsync(model.ReturnUrl);
             try

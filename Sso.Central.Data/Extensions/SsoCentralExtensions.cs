@@ -14,27 +14,39 @@ namespace Sso.Central.Data.Extensions
         {
             services
                 .AddDbContext<SsoCentralContext>();
-            //.AddScoped<Repositories.IAccountRepository, Repositories.AccountRepository>();
+                //.AddScoped<Repositories.IAccountRepository, Repositories.AccountRepository>();
 
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<SsoCentralContext>();
 
-            var isb = services.AddIdentityServer();
-            isb
+            services.AddIdentityServer()
                 .AddInMemoryClients(new List<Client>
                 {
                     new Client
                     {
-                        ClientId = "oauthClient",
-                        ClientName = "oauthClient",
+                        ClientId = "SsoApplicationClient",
+                        ClientName = "SsoApplicationClient",
                         AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
                         Enabled = true,
-                        ClientSecrets = new List<Secret> {new Secret("SuperSecretPassword".Sha256())}, // change me!
-                        AllowedScopes = new List<string> {"weatherforecasts.read"},
+                        ClientSecrets = new List<Secret>
+                        {
+                            new Secret("SuperSecretPassword".Sha256())
+                        },
+                        RequireClientSecret = false,
+                        RequirePkce = false,
+                        
+                        AllowedScopes = new List<string>
+                        {
+                            IdentityServer4.IdentityServerConstants.StandardScopes.OpenId,
+                            IdentityServer4.IdentityServerConstants.StandardScopes.Profile,
+                            IdentityServer4.IdentityServerConstants.StandardScopes.Email,
+                            "weatherforecasts.read"
+                        },
                         RedirectUris = new List<string>
                         {
-                            "https://localhost:44375/signin-central"
+                            "https://localhost:44384/signin-central",
                         },
+                        Claims = new List<IdentityServer4.Models.ClientClaim>()
                     }
                 })
                 .AddInMemoryIdentityResources(new List<IdentityResource>
@@ -52,9 +64,9 @@ namespace Sso.Central.Data.Extensions
                 {
                     new ApiResource
                     {
-                        Name = "api1",
-                        DisplayName = "API #1",
-                        Description = "Allow the application to access API #1 on your behalf",
+                        Name = "weatherforecasts",
+                        DisplayName = "Weatherforecasts API",
+                        Description = "Allow the application to access Weatherforecasts on your behalf",
                         Scopes = new List<string> { "weatherforecasts.read", "weatherforecasts.write"},
                         ApiSecrets = new List<Secret> {new Secret("ScopeSecret".Sha256())}, // change me!
                         UserClaims = new List<string> {"role"}
@@ -62,8 +74,8 @@ namespace Sso.Central.Data.Extensions
                 })
                 .AddInMemoryApiScopes(new List<ApiScope>
                 {
-                    new ApiScope("weatherforecasts.read", "Read Access to API #1"),
-                    new ApiScope("weatherforecasts.write", "Write Access to API #1")
+                    new ApiScope("weatherforecasts.read", "Read Access to Weatherforecasts API"),
+                    new ApiScope("weatherforecasts.write", "Write Access to Weatherforecasts API")
                 })
                 .AddTestUsers(new List<IdentityServer4.Test.TestUser>
                 {
@@ -78,18 +90,16 @@ namespace Sso.Central.Data.Extensions
                         }
                     }
                 })
-                .AddDeveloperSigningCredential();
-
-            isb
-                .AddOperationalStore(options =>
-                {
-                    options.ConfigureDbContext = (builder) => builder.UseInMemoryDatabase("SsoCentral");
-                })
-                .AddConfigurationStore(options =>
-                {
-                    options.ConfigureDbContext = (builder) => builder.UseInMemoryDatabase("SsoCentral");
-                });
-            isb.AddAspNetIdentity<IdentityUser>();
+                .AddDeveloperSigningCredential()
+                //.AddOperationalStore(options =>
+                //{
+                //    options.ConfigureDbContext = (builder) => builder.UseInMemoryDatabase("SsoCentral");
+                //})
+                //.AddConfigurationStore(options =>
+                //{
+                //    options.ConfigureDbContext = (builder) => builder.UseInMemoryDatabase("SsoCentral");
+                //})
+                .AddAspNetIdentity<IdentityUser>();
 
             return services;
         }

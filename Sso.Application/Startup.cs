@@ -29,15 +29,40 @@ namespace Sso.Application
             services
                 .AddAuthentication(options =>
                 {
+                    options.DefaultScheme = "cookie";
+                    options.DefaultChallengeScheme = "oidc";
                 })
                 .AddOAuth<CentralOptions, CentralHandler>("central", options =>
                 {
                     options.ClaimsIssuer = "https://localhost:44359";
                     options.SaveTokens = true;
-                    options.ClientId = "oauthClient";
+                    options.ClientId = "SsoApplicationClient";
                     options.ClientSecret = "SuperSecretPassword";
+                    
+                    //options.Scope.Add("openid");
+                    //options.Scope.Add("profile");
+                    //options.Scope.Add("email");
                     options.Scope.Add("weatherforecasts.read");
+
                     options.UsePkce = true;
+                })
+                .AddOpenIdConnect("oidc", options =>
+                {
+                    options.SignInScheme = "Cookies";
+
+                    options.Authority = "https://localhost:44359";
+                    options.RequireHttpsMetadata = false;
+
+                    options.ClientId = "SsoApplicationClient";
+                    options.ClientSecret = "SuperSecretPassword";
+                    options.ResponseType = "code id_token";
+
+                    options.SaveTokens = true;
+                    options.GetClaimsFromUserInfoEndpoint = true;
+
+                    options.Scope.Add("weatherforecasts.read");
+
+                    //options.ClaimActions.MapJsonKey("website", "website");
                 });
 
             services.AddSsoApplication();
