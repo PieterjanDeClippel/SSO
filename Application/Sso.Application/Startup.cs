@@ -37,7 +37,7 @@ namespace Sso.Application
                     options.ClaimsIssuer = "https://localhost:44359";
                     options.SaveTokens = true;
                     options.ClientId = "SsoApplicationClient";
-                    options.ClientSecret = "SuperSecretPassword";
+                    options.ClientSecret = "ABC123";
                     
                     //options.Scope.Add("openid");
                     //options.Scope.Add("profile");
@@ -65,7 +65,7 @@ namespace Sso.Application
                     //options.ClaimActions.MapJsonKey("website", "website");
                 });
 
-            services.AddSsoApplication();
+            services.AddSsoApplication(Configuration);
 
             services.ConfigureApplicationCookie(options =>
             {

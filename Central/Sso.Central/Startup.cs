@@ -30,7 +30,7 @@ namespace Sso.Central
             services.AddRazorPages();
 
 
-            services.AddSsoCentral();
+            services.AddSsoCentral(Configuration);
 
             services.AddAuthentication(options => { });
             services.AddAuthorization();

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Sso.Central.Controllers
@@ -32,6 +33,14 @@ namespace Sso.Central.Controllers
             this.signInManager = signInManager;
         }
 
+        [HttpGet("Clients")]
+        public async Task<IActionResult> GetClients()
+        {
+            var defaultClient = new IdentityServer4.Models.Client();
+            var clients = await clientStore.FindClientByIdAsync("SsoApplicationClient");
+            return Ok(clients);
+        }
+
         [HttpGet("Login")]
         public async Task<IActionResult> Login([FromQuery] string returnUrl)
         {
@@ -53,7 +62,7 @@ namespace Sso.Central.Controllers
             var context = await interaction.GetAuthorizationContextAsync(model.ReturnUrl);
             try
             {
-                var user = await signInManager.UserManager.FindByNameAsync(model.User.UserName);
+                var user = await signInManager.UserManager.FindByEmailAsync(model.User.Email);
                 if (user == null) throw new System.Exception();
 
                 var signinResult = await signInManager.CheckPasswordSignInAsync(user, model.Password, true);
