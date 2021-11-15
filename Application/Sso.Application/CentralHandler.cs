@@ -19,24 +19,25 @@ namespace Sso.Application
         {
         }
 
-        protected override string BuildChallengeUrl(AuthenticationProperties properties, string redirectUri)
+        protected override async Task InitializeEventsAsync()
         {
-            return base.BuildChallengeUrl(properties, redirectUri);
+            await base.InitializeEventsAsync();
         }
 
-        protected override Task<object> CreateEventsAsync()
+        protected override async Task InitializeHandlerAsync()
         {
-            return base.CreateEventsAsync();
+            await base.InitializeHandlerAsync();
         }
 
-        protected override string FormatScope()
+        protected override string ResolveTarget(string scheme)
         {
-            return base.FormatScope();
+            var result = base.ResolveTarget(scheme);
+            return result;
         }
 
-        protected override string FormatScope(IEnumerable<string> scopes)
+        protected override async Task HandleChallengeAsync(AuthenticationProperties properties)
         {
-            return base.FormatScope(scopes);
+            await base.HandleChallengeAsync(properties);
         }
 
         protected override void GenerateCorrelationId(AuthenticationProperties properties)
@@ -44,54 +45,64 @@ namespace Sso.Application
             base.GenerateCorrelationId(properties);
         }
 
-        protected override Task<HandleRequestResult> HandleAccessDeniedErrorAsync(AuthenticationProperties properties)
+        protected override string BuildChallengeUrl(AuthenticationProperties properties, string redirectUri)
         {
-            return base.HandleAccessDeniedErrorAsync(properties);
+            var challengeUrl = base.BuildChallengeUrl(properties, redirectUri);
+            return challengeUrl;
         }
 
-        protected override Task HandleChallengeAsync(AuthenticationProperties properties)
+        protected override string FormatScope()
         {
-            return base.HandleChallengeAsync(properties);
+            var scope = base.FormatScope();
+            return scope;
         }
 
-        protected override Task HandleForbiddenAsync(AuthenticationProperties properties)
+        protected override string FormatScope(IEnumerable<string> scopes)
         {
-            return base.HandleForbiddenAsync(properties);
+            var scope = base.FormatScope(scopes);
+            return scope;
         }
 
-        protected override Task<HandleRequestResult> HandleRemoteAuthenticateAsync()
+        // Everything below this line is never called
+        protected override async Task<object> CreateEventsAsync()
         {
-            return base.HandleRemoteAuthenticateAsync();
+            var events = await base.CreateEventsAsync();
+            return events;
         }
 
-        public override Task<bool> HandleRequestAsync()
+        protected override async Task<HandleRequestResult> HandleAccessDeniedErrorAsync(AuthenticationProperties properties)
         {
-            return base.HandleRequestAsync();
+            var result = await base.HandleAccessDeniedErrorAsync(properties);
+            return result;
         }
 
-        protected override Task InitializeEventsAsync()
+        protected override async Task HandleForbiddenAsync(AuthenticationProperties properties)
         {
-            return base.InitializeEventsAsync();
+            await base.HandleForbiddenAsync(properties);
         }
 
-        protected override Task InitializeHandlerAsync()
+        protected override async Task<HandleRequestResult> HandleRemoteAuthenticateAsync()
         {
-            return base.InitializeHandlerAsync();
+            var result = await base.HandleRemoteAuthenticateAsync();
+            return result;
         }
 
-        protected override string ResolveTarget(string scheme)
+        public override async Task<bool> HandleRequestAsync()
         {
-            return base.ResolveTarget(scheme);
+            var result = await base.HandleRequestAsync();
+            return result;
         }
 
-        public override Task<bool> ShouldHandleRequestAsync()
+        public override async Task<bool> ShouldHandleRequestAsync()
         {
-            return base.ShouldHandleRequestAsync();
+            var result = await base.ShouldHandleRequestAsync();
+            return result;
         }
 
         protected override bool ValidateCorrelationId(AuthenticationProperties properties)
         {
-            return base.ValidateCorrelationId(properties);
+            var result = base.ValidateCorrelationId(properties);
+            return result;
         }
 
         protected override async Task<AuthenticationTicket> CreateTicketAsync(ClaimsIdentity identity, AuthenticationProperties properties, OAuthTokenResponse tokens)
@@ -113,14 +124,16 @@ namespace Sso.Application
             return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
         }
 
-        protected override Task<OAuthTokenResponse> ExchangeCodeAsync(OAuthCodeExchangeContext context)
+        protected override async Task<OAuthTokenResponse> ExchangeCodeAsync(OAuthCodeExchangeContext context)
         {
-            return base.ExchangeCodeAsync(context);
+            var result = await base.ExchangeCodeAsync(context);
+            return result;
         }
 
-        protected override Task<AuthenticateResult> HandleAuthenticateAsync()
+        protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
-            return base.HandleAuthenticateAsync();
+            var result = await base.HandleAuthenticateAsync();
+            return result;
         }
     }
 }

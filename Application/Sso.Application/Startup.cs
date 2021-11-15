@@ -27,11 +27,11 @@ namespace Sso.Application
             services.AddRazorPages();
 
             services
-                .AddAuthentication(options =>
+                .AddAuthentication(/*options =>
                 {
                     options.DefaultScheme = "cookie";
                     options.DefaultChallengeScheme = "oidc";
-                })
+                }*/)
                 .AddOAuth<CentralOptions, CentralHandler>("central", options =>
                 {
                     options.ClaimsIssuer = "https://localhost:44359";
