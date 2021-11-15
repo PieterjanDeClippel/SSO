@@ -76,9 +76,9 @@ namespace Sso.Application
 
                     //options.ClaimActions.MapJsonKey("website", "website");
 
-                    options.Events.OnUserInformationReceived = async (info) =>
+                    options.Events.OnUserInformationReceived = (info) =>
                     {
-
+                        return Task.CompletedTask;
                     };
                 });
 
