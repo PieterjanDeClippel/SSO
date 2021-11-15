@@ -62,7 +62,7 @@ namespace Sso.Central.Controllers
             //var user = await accountService.Register(new Dtos.Dtos.User
             //{
             //    UserName = "Pieterjan",
-            //    Email = "pieterjandeclippel@msn.com",
+            //    Email = "pieterjan@example.com",
             //}, "Aze123@!");
             var context = await interaction.GetAuthorizationContextAsync(returnUrl);
 
