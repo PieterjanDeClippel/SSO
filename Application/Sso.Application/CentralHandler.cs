@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
@@ -16,6 +17,81 @@ namespace Sso.Application
         public CentralHandler(IOptionsMonitor<CentralOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock)
             : base(options, logger, encoder, clock)
         {
+        }
+
+        protected override string BuildChallengeUrl(AuthenticationProperties properties, string redirectUri)
+        {
+            return base.BuildChallengeUrl(properties, redirectUri);
+        }
+
+        protected override Task<object> CreateEventsAsync()
+        {
+            return base.CreateEventsAsync();
+        }
+
+        protected override string FormatScope()
+        {
+            return base.FormatScope();
+        }
+
+        protected override string FormatScope(IEnumerable<string> scopes)
+        {
+            return base.FormatScope(scopes);
+        }
+
+        protected override void GenerateCorrelationId(AuthenticationProperties properties)
+        {
+            base.GenerateCorrelationId(properties);
+        }
+
+        protected override Task<HandleRequestResult> HandleAccessDeniedErrorAsync(AuthenticationProperties properties)
+        {
+            return base.HandleAccessDeniedErrorAsync(properties);
+        }
+
+        protected override Task HandleChallengeAsync(AuthenticationProperties properties)
+        {
+            return base.HandleChallengeAsync(properties);
+        }
+
+        protected override Task HandleForbiddenAsync(AuthenticationProperties properties)
+        {
+            return base.HandleForbiddenAsync(properties);
+        }
+
+        protected override Task<HandleRequestResult> HandleRemoteAuthenticateAsync()
+        {
+            return base.HandleRemoteAuthenticateAsync();
+        }
+
+        public override Task<bool> HandleRequestAsync()
+        {
+            return base.HandleRequestAsync();
+        }
+
+        protected override Task InitializeEventsAsync()
+        {
+            return base.InitializeEventsAsync();
+        }
+
+        protected override Task InitializeHandlerAsync()
+        {
+            return base.InitializeHandlerAsync();
+        }
+
+        protected override string ResolveTarget(string scheme)
+        {
+            return base.ResolveTarget(scheme);
+        }
+
+        public override Task<bool> ShouldHandleRequestAsync()
+        {
+            return base.ShouldHandleRequestAsync();
+        }
+
+        protected override bool ValidateCorrelationId(AuthenticationProperties properties)
+        {
+            return base.ValidateCorrelationId(properties);
         }
 
         protected override async Task<AuthenticationTicket> CreateTicketAsync(ClaimsIdentity identity, AuthenticationProperties properties, OAuthTokenResponse tokens)

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Sso.Central.Data.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -13,30 +14,26 @@ namespace Sso.Central.Controllers
     [Route("[controller]")]
     public class AccountController : Controller
     {
-        private readonly IIdentityServerInteractionService interaction;
         private readonly IEventService events;
         private readonly IClientStore clientStore;
+        private readonly IIdentityServerInteractionService interaction;
+        private readonly IAccountService accountService;
 
-        //private readonly UserManager<IdentityUser> userManager;
-        private readonly SignInManager<IdentityUser> signInManager;
         public AccountController(
-            IIdentityServerInteractionService interaction,
             IEventService events,
             IClientStore clientStore,
-            //UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+            IIdentityServerInteractionService interaction,
+            IAccountService accountService)
         {
-            this.interaction = interaction;
             this.events = events;
             this.clientStore = clientStore;
-            //this.userManager = userManager;
-            this.signInManager = signInManager;
+            this.interaction = interaction;
+            this.accountService = accountService;
         }
 
         [HttpGet("Clients")]
         public async Task<IActionResult> GetClients()
         {
-            var defaultClient = new IdentityServer4.Models.Client();
             var clients = await clientStore.FindClientByIdAsync("SsoApplicationClient");
             return Ok(clients);
         }
@@ -44,6 +41,11 @@ namespace Sso.Central.Controllers
         [HttpGet("Login")]
         public async Task<IActionResult> Login([FromQuery] string returnUrl)
         {
+            var user = await accountService.Register(new Dtos.Dtos.User
+            {
+                UserName = "Pieterjan",
+                Email = "pieterjandeclippel@msn.com",
+            }, "Aze123@!");
             var context = await interaction.GetAuthorizationContextAsync(returnUrl);
 
             return View(new ViewModels.Account.LoginVM
@@ -59,19 +61,10 @@ namespace Sso.Central.Controllers
         [HttpPost("Login")]
         public async Task<IActionResult> LoginPost([FromForm] ViewModels.Account.LoginVM model)
         {
-            var context = await interaction.GetAuthorizationContextAsync(model.ReturnUrl);
             try
             {
-                var user = await signInManager.UserManager.FindByEmailAsync(model.User.Email);
-                if (user == null) throw new System.Exception();
-
-                var signinResult = await signInManager.CheckPasswordSignInAsync(user, model.Password, true);
-                if (!signinResult.Succeeded) throw new System.Exception();
-
-                await events.RaiseAsync(new UserLoginSuccessEvent(user.UserName, user.Id, user.UserName, clientId: context?.Client.ClientId));
-                await HttpContext.SignInAsync(new IdentityServer4.IdentityServerUser(user.Id) { DisplayName = user.UserName });
-
-                if (context != null)
+                var request = await accountService.Login(model.User.Email, model.Password, model.ReturnUrl);
+                if (request != null)
                 {
                     return Redirect(model.ReturnUrl);
                 }
@@ -90,7 +83,6 @@ namespace Sso.Central.Controllers
             }
             catch (System.Exception)
             {
-                await events.RaiseAsync(new UserLoginFailureEvent(model.User.UserName, "invalid credentials", clientId: context?.Client.ClientId));
                 return View(model);
             }
         }

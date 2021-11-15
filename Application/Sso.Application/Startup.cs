@@ -54,14 +54,14 @@ namespace Sso.Application
                     options.RequireHttpsMetadata = false;
 
                     options.ClientId = "SsoApplicationClient";
-                    options.ClientSecret = "SuperSecretPassword";
+                    options.ClientSecret = "ABC123";
                     options.ResponseType = "code id_token";
 
                     options.SaveTokens = true;
                     options.GetClaimsFromUserInfoEndpoint = true;
 
                     options.Scope.Add("weatherforecasts.read");
-
+                    
                     //options.ClaimActions.MapJsonKey("website", "website");
                 });
 

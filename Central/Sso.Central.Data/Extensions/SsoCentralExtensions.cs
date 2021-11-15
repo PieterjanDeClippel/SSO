@@ -14,10 +14,11 @@ namespace Sso.Central.Data.Extensions
         public static IServiceCollection AddSsoCentral(this IServiceCollection services, IConfiguration configuration)
         {
             services
-                .AddDbContext<SsoCentralContext>();
-                //.AddScoped<Repositories.IAccountRepository, Repositories.AccountRepository>();
+                .AddDbContext<SsoCentralContext>()
+                .AddScoped<Repositories.IAccountRepository, Repositories.AccountRepository>()
+                .AddScoped<Services.IAccountService, Services.AccountService>();
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<Entities.User, Entities.Role>()
                 .AddEntityFrameworkStores<SsoCentralContext>();
 
             services.AddIdentityServer()
@@ -128,7 +129,7 @@ namespace Sso.Central.Data.Extensions
                         identityServerOptions.ConfigureDbContext = (builder) => builder
                             .UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=SsoCentral;Trusted_Connection=True;ConnectRetryCount=0")
                 )
-                .AddAspNetIdentity<IdentityUser>();
+                .AddAspNetIdentity<Entities.User>();
 
             return services;
         }

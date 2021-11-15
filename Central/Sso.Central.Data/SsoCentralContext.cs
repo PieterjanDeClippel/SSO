@@ -14,7 +14,7 @@ namespace Sso.Central.Data
     // dotnet ef database update --project ..\Sso.Central.Data --context SsoCentralContext
 
 
-    internal class SsoCentralContext : IdentityDbContext<IdentityUser, IdentityRole, string>, IPersistedGrantDbContext, IConfigurationDbContext
+    internal class SsoCentralContext : IdentityDbContext<Entities.User, Entities.Role, Guid>, IPersistedGrantDbContext, IConfigurationDbContext
     {
         #region Constructor
         private readonly IConfiguration configuration;
@@ -57,7 +57,7 @@ namespace Sso.Central.Data
         {
             base.OnModelCreating(builder);
             builder.Entity<DeviceFlowCodes>().HasNoKey();
-            builder.Entity<PersistedGrant>().HasNoKey();
+            builder.Entity<PersistedGrant>().HasKey(pg => pg.Key);
         }
 
         public async Task<int> SaveChangesAsync()
