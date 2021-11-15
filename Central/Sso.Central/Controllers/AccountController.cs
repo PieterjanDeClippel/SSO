@@ -41,11 +41,11 @@ namespace Sso.Central.Controllers
         [HttpGet("Login")]
         public async Task<IActionResult> Login([FromQuery] string returnUrl)
         {
-            var user = await accountService.Register(new Dtos.Dtos.User
-            {
-                UserName = "Pieterjan",
-                Email = "pieterjandeclippel@msn.com",
-            }, "Aze123@!");
+            //var user = await accountService.Register(new Dtos.Dtos.User
+            //{
+            //    UserName = "Pieterjan",
+            //    Email = "pieterjandeclippel@msn.com",
+            //}, "Aze123@!");
             var context = await interaction.GetAuthorizationContextAsync(returnUrl);
 
             return View(new ViewModels.Account.LoginVM
