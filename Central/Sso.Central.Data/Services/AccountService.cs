@@ -14,6 +14,7 @@ namespace Sso.Central.Data.Services
     {
         Task<Dtos.Dtos.User> Register(Dtos.Dtos.User user, string password);
         Task<IdentityServer4.Models.AuthorizationRequest> Login(string email, string password, string redirectUrl);
+        //Task AddClientSecret(string clientId, string secret, string description);
     }
 
     internal class AccountService : IAccountService
@@ -47,8 +48,18 @@ namespace Sso.Central.Data.Services
             {
                 var user = await accountRepository.Login(email, password);
 
-                await events.RaiseAsync(new UserLoginSuccessEvent(user.UserName, user.Id.ToString(), user.UserName, clientId: request?.Client.ClientId));
-                await httpContextAccessor.HttpContext.SignInAsync(new IdentityServer4.IdentityServerUser(user.Id.ToString()) { DisplayName = user.UserName });
+                await events.RaiseAsync(new UserLoginSuccessEvent(user.UserName, user.Id, user.UserName, clientId: request?.Client.ClientId));
+                var isUser = new IdentityServer4.IdentityServerUser(user.Id)
+                {
+                    DisplayName = user.UserName,
+                    AdditionalClaims = new[]
+                    {
+                        new System.Security.Claims.Claim("sub", user.Id),
+                        new System.Security.Claims.Claim("email", user.Email),
+                        new System.Security.Claims.Claim("name", user.UserName),
+                    }
+                };
+                await httpContextAccessor.HttpContext.SignInAsync(isUser);
 
                 return request;
             }
@@ -58,5 +69,10 @@ namespace Sso.Central.Data.Services
                 throw loginEx;
             }
         }
+
+        //public async Task AddClientSecret(string clientId, string secret, string description)
+        //{
+        //    await accountRepository.AddClientSecret(clientId, secret, description);
+        //}
     }
 }

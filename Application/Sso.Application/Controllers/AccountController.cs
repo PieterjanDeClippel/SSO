@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Sso.Application.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class AccountController : Controller
     {
         private readonly IAccountRepository accountRepository;

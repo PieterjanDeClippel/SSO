@@ -14,7 +14,7 @@ namespace Sso.Central.Data
     // dotnet ef database update --project ..\Sso.Central.Data --context SsoCentralContext
 
 
-    internal class SsoCentralContext : IdentityDbContext<Entities.User, Entities.Role, Guid>, IPersistedGrantDbContext, IConfigurationDbContext
+    internal class SsoCentralContext : IdentityDbContext<Entities.User, Entities.Role, string>, IPersistedGrantDbContext, IConfigurationDbContext
     {
         #region Constructor
         private readonly IConfiguration configuration;

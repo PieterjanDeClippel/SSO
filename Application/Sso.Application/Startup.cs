@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -27,24 +28,34 @@ namespace Sso.Application
             services.AddRazorPages();
 
             services
-                .AddAuthentication(/*options =>
+                .AddAuthentication(options =>
                 {
-                    options.DefaultScheme = "cookie";
-                    options.DefaultChallengeScheme = "oidc";
-                }*/)
+                    //options.DefaultScheme = Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationDefaults.AuthenticationScheme;
+                    //options.DefaultAuthenticateScheme = Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationDefaults.AuthenticationScheme;
+                    //options.DefaultChallengeScheme = "oidc";
+                })
+                .AddCookie(Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationDefaults.AuthenticationScheme, options =>
+                {
+                    options.Cookie.HttpOnly = true;
+                    options.ExpireTimeSpan = TimeSpan.FromDays(30);
+                    options.AccessDeniedPath = new Microsoft.AspNetCore.Http.PathString("/AccessDenied");
+                })
                 .AddOAuth<CentralOptions, CentralHandler>("central", options =>
                 {
                     options.ClaimsIssuer = "https://localhost:44359";
                     options.SaveTokens = true;
                     options.ClientId = "SsoApplicationClient";
-                    options.ClientSecret = "ABC123";
-                    
+                    options.ClientSecret = "qsdfghjklm";
+
                     //options.Scope.Add("openid");
                     //options.Scope.Add("profile");
                     //options.Scope.Add("email");
                     options.Scope.Add("weatherforecasts.read");
+                    options.Scope.Add("weatherforecasts.write");
 
                     options.UsePkce = true;
+
+                    //options.ClaimActions.MapJsonKey("email", )
                 })
                 .AddOpenIdConnect("oidc", options =>
                 {
@@ -54,24 +65,24 @@ namespace Sso.Application
                     options.RequireHttpsMetadata = false;
 
                     options.ClientId = "SsoApplicationClient";
-                    options.ClientSecret = "ABC123";
+                    options.ClientSecret = "qsdfghjklm";
                     options.ResponseType = "code id_token";
 
                     options.SaveTokens = true;
                     options.GetClaimsFromUserInfoEndpoint = true;
 
                     options.Scope.Add("weatherforecasts.read");
-                    
+                    options.Scope.Add("weatherforecasts.write");
+
                     //options.ClaimActions.MapJsonKey("website", "website");
+
+                    options.Events.OnUserInformationReceived = async (info) =>
+                    {
+
+                    };
                 });
 
             services.AddSsoApplication(Configuration);
-
-            services.ConfigureApplicationCookie(options =>
-            {
-                options.Cookie.HttpOnly = true;
-                options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/api/Account/Login");
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

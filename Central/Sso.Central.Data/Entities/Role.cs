@@ -3,7 +3,7 @@ using System;
 
 namespace Sso.Central.Data.Entities
 {
-    internal class Role : IdentityRole<Guid>
+    internal class Role : IdentityRole<string>
     {
     }
 }

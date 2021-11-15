@@ -62,14 +62,14 @@ VALUES
 	('True', 'weatherforecasts.read', 'WeatherForecasts.Read', 'Get the weather forecasts', 'True', 'False', 'True'),
 	('True', 'weatherforecasts.write', 'WeatherForecasts.Write', 'Edit the weather forecasts', 'True', 'False', 'True');
 
-INSERT INTO [dbo].[IdentityResource]
+INSERT INTO [dbo].[IdentityResources]
 	([Enabled], [Name], [DisplayName], [Description], [Required], [Emphasize], [ShowInDiscoveryDocument], [Created], [NonEditable])
 VALUES
 	('True', 'openid', 'OpenID', 'Your user identifier', 'False', 'True', 'True', '2021-11-15 00:00:00', 'False'),
 	('True', 'profile', 'User profile', 'Your user profile information (first name, last name, etc.)', 'False', 'True', 'True', '2021-11-15 00:00:00', 'False'),
 	('True', 'email', 'Your email address', 'Your email address', 'False', 'True', 'True', '2021-11-15 00:00:00', 'False');
 
-INSERT INTO [dbo].[IdentityResource]
+INSERT INTO [dbo].[IdentityResources]
 	([Enabled], [Name], [DisplayName], [Description], [Required], [Emphasize], [ShowInDiscoveryDocument], [Created], [NonEditable])
 VALUES
 	('True', 'role', 'Application role', 'Your role in this application', 'False', 'True', 'True', '2021-11-15 00:00:00', 'False')
