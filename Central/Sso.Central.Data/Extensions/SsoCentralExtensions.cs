@@ -21,7 +21,7 @@ namespace Sso.Central.Data.Extensions
             services.AddIdentity<Entities.User, Entities.Role>()
                 .AddEntityFrameworkStores<SsoCentralContext>();
 
-            services.AddIdentityServer()
+            var isBuilder = services.AddIdentityServer();
                 //.AddInMemoryClients(new List<Client>
                 //{
                 //    new Client
@@ -36,7 +36,7 @@ namespace Sso.Central.Data.Extensions
                 //        },
                 //        RequireClientSecret = false,
                 //        RequirePkce = false,
-                        
+
                 //        AllowedScopes = new List<string>
                 //        {
                 //            IdentityServer4.IdentityServerConstants.StandardScopes.OpenId,
@@ -92,6 +92,7 @@ namespace Sso.Central.Data.Extensions
                 //        }
                 //    }
                 //})
+            isBuilder
                 .AddDeveloperSigningCredential()
                 .AddOperationalStore<SsoCentralContext>(identityServerOptions =>
                 {

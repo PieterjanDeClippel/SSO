@@ -54,6 +54,14 @@ namespace Sso.Central
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            app.Use(async (context, next) =>
+            {
+                if (context.Request.Path.Value.Contains("connect/authorize"))
+                {
+                }
+                await next();
+            });
+
             app.UseRouting();
             app.UseIdentityServer();
 
