@@ -84,6 +84,10 @@ namespace Sso.Application
         protected override async Task<HandleRequestResult> HandleRemoteAuthenticateAsync()
         {
             var result = await base.HandleRemoteAuthenticateAsync();
+            foreach (var action in Options.ClaimActions)
+            {
+                //action.Run(payload.RootElement, identity, ClaimsIssuer);
+            }
             return result;
         }
 

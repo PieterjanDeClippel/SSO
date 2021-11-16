@@ -130,7 +130,8 @@ namespace Sso.Central.Data.Extensions
                         identityServerOptions.ConfigureDbContext = (builder) => builder
                             .UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=SsoCentral;Trusted_Connection=True;ConnectRetryCount=0")
                 )
-                .AddAspNetIdentity<Entities.User>();
+                .AddAspNetIdentity<Entities.User>()
+                .AddProfileService<Services.SsoProfileService>();
 
             return services;
         }
