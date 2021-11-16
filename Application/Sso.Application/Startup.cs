@@ -30,47 +30,55 @@ namespace Sso.Application
             services
                 .AddAuthentication(options =>
                 {
+                    options.DefaultScheme = "cookie";
                     //options.DefaultScheme = Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationDefaults.AuthenticationScheme;
                     //options.DefaultAuthenticateScheme = Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationDefaults.AuthenticationScheme;
-                    //options.DefaultChallengeScheme = "oidc";
+                    options.DefaultChallengeScheme = "central";
                 })
-                .AddCookie(Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationDefaults.AuthenticationScheme, options =>
+                //.AddCookie(Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationDefaults.AuthenticationScheme, options =>
+                .AddCookie("cookie", options =>
                 {
                     options.Cookie.HttpOnly = true;
                     options.ExpireTimeSpan = TimeSpan.FromDays(30);
                     options.AccessDeniedPath = new Microsoft.AspNetCore.Http.PathString("/AccessDenied");
                 })
-                .AddOAuth<CentralOptions, CentralHandler>("central", options =>
+                //.AddOAuth<CentralOptions, CentralHandler>("central", options =>
+                //{
+                //    options.ClaimsIssuer = "https://localhost:44359";
+                //    options.SaveTokens = true;
+                //    options.ClientId = "SsoApplicationClient";
+                //    options.ClientSecret = "qsdfghjklm";
+
+                //    //options.Scope.Add("openid");
+                //    //options.Scope.Add("profile");
+                //    //options.Scope.Add("email");
+                //    options.Scope.Add("weatherforecasts.read");
+                //    options.Scope.Add("weatherforecasts.write");
+
+                //    options.UsePkce = true;
+
+                //    //options.ClaimActions.MapJsonKey("email", )
+                //})
+                .AddOpenIdConnect("central", options =>
                 {
-                    options.ClaimsIssuer = "https://localhost:44359";
-                    options.SaveTokens = true;
-                    options.ClientId = "SsoApplicationClient";
-                    options.ClientSecret = "qsdfghjklm";
-
-                    //options.Scope.Add("openid");
-                    //options.Scope.Add("profile");
-                    //options.Scope.Add("email");
-                    options.Scope.Add("weatherforecasts.read");
-                    options.Scope.Add("weatherforecasts.write");
-
-                    options.UsePkce = true;
-
-                    //options.ClaimActions.MapJsonKey("email", )
-                })
-                .AddOpenIdConnect("oidc", options =>
-                {
-                    options.SignInScheme = "Cookies";
+                    //options.SignInScheme = Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationDefaults.AuthenticationScheme;
+                    options.SignInScheme = "cookie";
 
                     options.Authority = "https://localhost:44359";
                     options.RequireHttpsMetadata = false;
+                    options.CallbackPath = new Microsoft.AspNetCore.Http.PathString("/signin-central");
 
                     options.ClientId = "SsoApplicationClient";
                     options.ClientSecret = "qsdfghjklm";
-                    options.ResponseType = "code id_token";
+                    options.ResponseType = "code";
+                    options.UsePkce = true;
+                    //options.ResponseType = "code id_token";
 
                     options.SaveTokens = true;
                     options.GetClaimsFromUserInfoEndpoint = true;
 
+                    options.Scope.Add("openid");
+                    options.Scope.Add("profile");
                     options.Scope.Add("weatherforecasts.read");
                     options.Scope.Add("weatherforecasts.write");
 
@@ -101,7 +109,7 @@ namespace Sso.Application
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseAuthentication();
             app.UseRouting();
 
             app.UseAuthorization();
