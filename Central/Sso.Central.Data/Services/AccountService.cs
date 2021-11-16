@@ -56,7 +56,7 @@ namespace Sso.Central.Data.Services
                     {
                         new System.Security.Claims.Claim("sub", user.Id),
                         new System.Security.Claims.Claim("email", user.Email),
-                        new System.Security.Claims.Claim("name", user.UserName),
+                        new System.Security.Claims.Claim("profile", user.UserName),
                     }
                 };
                 await httpContextAccessor.HttpContext.SignInAsync(isUser);

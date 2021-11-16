@@ -40,6 +40,11 @@ namespace Sso.Central.Data.Repositories
                 Email = user.Email,
             };
             await userManager.CreateAsync(entity, password);
+            await userManager.AddClaimsAsync(entity, new[]
+            {
+                new System.Security.Claims.Claim("email", user.Email),
+                new System.Security.Claims.Claim("name", user.UserName),
+            });
             return new Dtos.Dtos.User
             {
                 Id = user.Id,

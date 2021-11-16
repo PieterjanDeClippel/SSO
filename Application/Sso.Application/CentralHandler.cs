@@ -107,14 +107,24 @@ namespace Sso.Application
 
         protected override async Task<AuthenticationTicket> CreateTicketAsync(ClaimsIdentity identity, AuthenticationProperties properties, OAuthTokenResponse tokens)
         {
-            var endpoint = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, "access_token", tokens.AccessToken);
-            var response = await Backchannel.GetAsync(endpoint, Context.RequestAborted);
+            //var endpoint = QueryHelpers.AddQueryString(Options.UserInformationEndpoint, "access_token", tokens.AccessToken);
+            //var response = await Backchannel.GetAsync(Options.UserInformationEndpoint, Context.RequestAborted);
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new System.Uri(Options.UserInformationEndpoint),
+            };
+            request.Headers.Add("Authorization", "Bearer " + tokens.AccessToken); // "Bearer" = Case sensitive
+            request.Headers.Add("scope", "openid,email,profile");
+            var response = await Backchannel.SendAsync(request);
+            var content = await response.Content.ReadAsStringAsync();
             if (!response.IsSuccessStatusCode)
             {
-                throw new HttpRequestException($"An error occurred when retrieving Facebook user information ({response.StatusCode}). Please check if the authentication information is correct and the corresponding Facebook Graph API is enabled.");
+                throw new HttpRequestException($"An error occurred when retrieving Central user information ({response.StatusCode}). Please check if the authentication information is correct and the corresponding Facebook Graph API is enabled.");
             }
 
-            var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+            string json = await response.Content.ReadAsStringAsync();
+            var payload = JsonDocument.Parse(json);
 
             var context = new OAuthCreatingTicketContext(new ClaimsPrincipal(identity), properties, Context, Scheme, Options, Backchannel, tokens, payload.RootElement);
             context.RunClaimActions();

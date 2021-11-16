@@ -42,53 +42,54 @@ namespace Sso.Application
                     options.ExpireTimeSpan = TimeSpan.FromDays(30);
                     options.AccessDeniedPath = new Microsoft.AspNetCore.Http.PathString("/AccessDenied");
                 })
-                //.AddOAuth<CentralOptions, CentralHandler>("central", options =>
-                //{
-                //    options.ClaimsIssuer = "https://localhost:44359";
-                //    options.SaveTokens = true;
-                //    options.ClientId = "SsoApplicationClient";
-                //    options.ClientSecret = "qsdfghjklm";
-
-                //    //options.Scope.Add("openid");
-                //    //options.Scope.Add("profile");
-                //    //options.Scope.Add("email");
-                //    options.Scope.Add("weatherforecasts.read");
-                //    options.Scope.Add("weatherforecasts.write");
-
-                //    options.UsePkce = true;
-
-                //    //options.ClaimActions.MapJsonKey("email", )
-                //})
-                .AddOpenIdConnect("central", options =>
+                .AddOAuth<CentralOptions, CentralHandler>("central", options =>
                 {
-                    //options.SignInScheme = Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationDefaults.AuthenticationScheme;
-                    options.SignInScheme = "cookie";
-
-                    options.Authority = "https://localhost:44359";
-                    options.RequireHttpsMetadata = false;
-                    options.CallbackPath = new Microsoft.AspNetCore.Http.PathString("/signin-central");
-
+                    options.ClaimsIssuer = "https://localhost:44359";
+                    options.SaveTokens = true;
                     options.ClientId = "SsoApplicationClient";
                     options.ClientSecret = "qsdfghjklm";
-                    options.ResponseType = "code";
-                    options.UsePkce = true;
-                    //options.ResponseType = "code id_token";
-
-                    options.SaveTokens = true;
-                    options.GetClaimsFromUserInfoEndpoint = true;
+                    options.CallbackPath = new Microsoft.AspNetCore.Http.PathString("/signin-central");
 
                     options.Scope.Add("openid");
                     options.Scope.Add("profile");
+                    options.Scope.Add("email");
                     options.Scope.Add("weatherforecasts.read");
                     options.Scope.Add("weatherforecasts.write");
 
-                    //options.ClaimActions.MapJsonKey("website", "website");
+                    options.UsePkce = true;
 
-                    options.Events.OnUserInformationReceived = (info) =>
-                    {
-                        return Task.CompletedTask;
-                    };
+                    options.ClaimActions.MapJsonKey("email", "Email");
                 });
+            //.AddOpenIdConnect("central", options =>
+            //{
+            //    //options.SignInScheme = Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationDefaults.AuthenticationScheme;
+            //    options.SignInScheme = "cookie";
+
+            //    options.Authority = "https://localhost:44359";
+            //    options.RequireHttpsMetadata = false;
+            //    options.CallbackPath = new Microsoft.AspNetCore.Http.PathString("/signin-central");
+
+            //    options.ClientId = "SsoApplicationClient";
+            //    options.ClientSecret = "qsdfghjklm";
+            //    options.ResponseType = "code";
+            //    options.UsePkce = true;
+            //    //options.ResponseType = "code id_token";
+
+            //    options.SaveTokens = true;
+            //    options.GetClaimsFromUserInfoEndpoint = true;
+
+            //    options.Scope.Add("openid");
+            //    options.Scope.Add("profile");
+            //    options.Scope.Add("weatherforecasts.read");
+            //    options.Scope.Add("weatherforecasts.write");
+
+            //    //options.ClaimActions.MapJsonKey("website", "website");
+
+            //    options.Events.OnUserInformationReceived = (info) =>
+            //    {
+            //        return Task.CompletedTask;
+            //    };
+            //});
 
             services.AddSsoApplication(Configuration);
         }

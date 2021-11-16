@@ -62,6 +62,7 @@ namespace Sso.Central
                 await next();
             });
 
+            app.UseAuthentication();
             app.UseRouting();
             app.UseIdentityServer();
 
