@@ -53,12 +53,16 @@ namespace Sso.Application
                     options.Scope.Add("openid");
                     options.Scope.Add("profile");
                     options.Scope.Add("email");
+                    options.Scope.Add("nameidentifier");
                     options.Scope.Add("weatherforecasts.read");
                     options.Scope.Add("weatherforecasts.write");
 
                     options.UsePkce = true;
 
-                    options.ClaimActions.MapJsonKey("email", "Email");
+                    options.ClaimActions.MapJsonKey("sub", "sub");
+                    options.ClaimActions.MapJsonKey("name", "name");
+                    options.ClaimActions.MapJsonKey("email", "email");
+                    options.ClaimActions.MapJsonKey("nameidentifier", "nameidentifier");
                 });
             //.AddOpenIdConnect("central", options =>
             //{
