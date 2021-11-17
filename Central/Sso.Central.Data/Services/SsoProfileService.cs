@@ -26,6 +26,9 @@ namespace Sso.Central.Data.Services
             var allClaims = await userManager.GetClaimsAsync(user);
             //var filteredClaims = allClaims.Where(c => context.RequestedClaimTypes.Contains(c.Type));
             //context.IssuedClaims = filteredClaims.ToList();
+            allClaims.Add(new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Name, user.UserName));
+            allClaims.Add(new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Email, user.Email));
+            allClaims.Add(new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.MobilePhone, user.PhoneNumber));
             context.IssuedClaims = allClaims.ToList();
         }
 

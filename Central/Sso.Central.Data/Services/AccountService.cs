@@ -5,6 +5,7 @@ using Sso.Central.Data.Exceptions;
 using Sso.Central.Data.Repositories;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -54,9 +55,9 @@ namespace Sso.Central.Data.Services
                     DisplayName = user.UserName,
                     AdditionalClaims = new[]
                     {
-                        new System.Security.Claims.Claim("sub", user.Id),
-                        new System.Security.Claims.Claim("email", user.Email),
-                        new System.Security.Claims.Claim("profile", user.UserName),
+                        new Claim(ClaimTypes.NameIdentifier, user.Id),
+                        new Claim(ClaimTypes.Name, user.UserName),
+                        new Claim(ClaimTypes.Email, user.Email),
                     }
                 };
                 await httpContextAccessor.HttpContext.SignInAsync(isUser);

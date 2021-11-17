@@ -71,7 +71,7 @@ namespace Sso.Central.Data.Extensions
                 //        Description = "Allow the application to access Weatherforecasts on your behalf",
                 //        Scopes = new List<string> { "weatherforecasts.read", "weatherforecasts.write"},
                 //        ApiSecrets = new List<Secret> {new Secret("ScopeSecret".Sha256())}, // change me!
-                //        UserClaims = new List<string> {"role"}
+                //        UserClaims = new List<string> {"role"},
                 //    }
                 //})
                 //.AddInMemoryApiScopes(new List<ApiScope>
