@@ -51,18 +51,17 @@ namespace Sso.Application
                     options.CallbackPath = new Microsoft.AspNetCore.Http.PathString("/signin-central");
 
                     options.Scope.Add("openid");
+                    options.Scope.Add("username");
                     options.Scope.Add("profile");
-                    options.Scope.Add("email");
-                    options.Scope.Add("nameidentifier");
                     options.Scope.Add("weatherforecasts.read");
                     options.Scope.Add("weatherforecasts.write");
 
                     options.UsePkce = true;
 
-                    options.ClaimActions.MapJsonKey("sub", "sub");
-                    options.ClaimActions.MapJsonKey("name", "name");
-                    options.ClaimActions.MapJsonKey("email", "email");
-                    options.ClaimActions.MapJsonKey("nameidentifier", "nameidentifier");
+                    options.ClaimActions.MapJsonKey("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier", "sub");
+                    options.ClaimActions.MapJsonKey("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name", "name");
+                    options.ClaimActions.MapJsonKey("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress", "email");
+                    options.ClaimActions.MapJsonKey("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/phone", "phone");
                 });
             //.AddOpenIdConnect("central", options =>
             //{
