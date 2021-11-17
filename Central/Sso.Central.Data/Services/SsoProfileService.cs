@@ -24,9 +24,8 @@ namespace Sso.Central.Data.Services
         {
             var user = await userManager.GetUserAsync(context.Subject);
             var allClaims = await userManager.GetClaimsAsync(user);
-            //var filteredClaims = allClaims.Where(c => context.RequestedClaimTypes.Contains(c.Type));
-            //context.IssuedClaims = filteredClaims.ToList();
-            context.IssuedClaims = allClaims.ToList();
+            var filteredClaims = allClaims.Where(c => context.RequestedClaimTypes.Contains(c.Type));
+            context.IssuedClaims = filteredClaims.ToList();
         }
 
         public async Task IsActiveAsync(IsActiveContext context)

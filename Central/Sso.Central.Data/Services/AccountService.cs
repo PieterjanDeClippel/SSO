@@ -54,9 +54,12 @@ namespace Sso.Central.Data.Services
                     DisplayName = user.UserName,
                     AdditionalClaims = new[]
                     {
-                        new System.Security.Claims.Claim("sub", user.Id),
-                        new System.Security.Claims.Claim("email", user.Email),
-                        new System.Security.Claims.Claim("profile", user.UserName),
+                        //new System.Security.Claims.Claim("sub", user.Id),
+                        //new System.Security.Claims.Claim("email", user.Email),
+                        //new System.Security.Claims.Claim("profile", user.UserName),
+                        new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.NameIdentifier, user.Id),
+                        new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Name, user.UserName),
+                        new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Email, user.Email),
                     }
                 };
                 await httpContextAccessor.HttpContext.SignInAsync(isUser);

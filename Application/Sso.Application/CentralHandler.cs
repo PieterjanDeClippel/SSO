@@ -119,7 +119,7 @@ namespace Sso.Application
                 RequestUri = new System.Uri(Options.UserInformationEndpoint),
             };
             request.Headers.Add("Authorization", "Bearer " + tokens.AccessToken); // "Bearer" = Case sensitive
-            request.Headers.Add("scope", "openid,email,profile,name,id," + ClaimTypes.NameIdentifier);
+            request.Headers.Add("scope", $"openid,email,profile,name,id,{ClaimTypes.NameIdentifier},{ClaimTypes.Name},{ClaimTypes.Email}");
             var response = await Backchannel.SendAsync(request);
             var content = await response.Content.ReadAsStringAsync();
             if (!response.IsSuccessStatusCode)

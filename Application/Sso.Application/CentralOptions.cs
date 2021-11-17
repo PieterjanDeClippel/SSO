@@ -13,19 +13,19 @@ namespace Sso.Application
             UserInformationEndpoint = "https://localhost:44359/connect/userinfo";
 
             Scope.Add("openid");
-            Scope.Add("profile");
-            Scope.Add("email");
-            //Scope.Add(System.Security.Claims.ClaimTypes.NameIdentifier);
-            Scope.Add("name");
+            //Scope.Add("profile");
+            //Scope.Add("email");
+            Scope.Add(System.Security.Claims.ClaimTypes.NameIdentifier);
+            Scope.Add(System.Security.Claims.ClaimTypes.Email);
+            Scope.Add(System.Security.Claims.ClaimTypes.Name);
             Scope.Add("weatherforecasts.read");
             Scope.Add("weatherforecasts.write");
 
             UsePkce = true;
 
-            ClaimActions.MapJsonKey("sub", "sub"); // Sub claim <= "sub" from json
-            ClaimActions.MapJsonKey("name", "name");
-            ClaimActions.MapJsonKey("email", "email");
-            //ClaimActions.MapJsonKey("name", "nameidentifier");
+            ClaimActions.MapJsonKey(System.Security.Claims.ClaimTypes.Name, "name");
+            ClaimActions.MapJsonKey(System.Security.Claims.ClaimTypes.NameIdentifier, "sub"); // Sub claim <= "sub" from json
+            ClaimActions.MapJsonKey(System.Security.Claims.ClaimTypes.Email, "email");
         }
     }
 }

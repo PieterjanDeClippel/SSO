@@ -42,8 +42,9 @@ namespace Sso.Central.Data.Repositories
             await userManager.CreateAsync(entity, password);
             await userManager.AddClaimsAsync(entity, new[]
             {
-                new System.Security.Claims.Claim("email", user.Email),
-                new System.Security.Claims.Claim("name", user.UserName),
+                new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.NameIdentifier, user.Id),
+                new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Name, user.UserName),
+                new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Email, user.Email),
             });
             return new Dtos.Dtos.User
             {
