@@ -48,21 +48,6 @@ namespace Sso.Application
                     options.SaveTokens = true;
                     options.ClientId = "SsoApplicationClient";
                     options.ClientSecret = "qsdfghjklm";
-                    options.CallbackPath = new Microsoft.AspNetCore.Http.PathString("/signin-central");
-
-                    options.Scope.Add("openid");
-                    options.Scope.Add("profile");
-                    options.Scope.Add("email");
-                    options.Scope.Add(System.Security.Claims.ClaimTypes.NameIdentifier);
-                    options.Scope.Add("weatherforecasts.read");
-                    options.Scope.Add("weatherforecasts.write");
-
-                    options.UsePkce = true;
-
-                    options.ClaimActions.MapJsonKey("sub", "sub");
-                    options.ClaimActions.MapJsonKey("name", "name");
-                    options.ClaimActions.MapJsonKey("email", "email");
-                    options.ClaimActions.MapJsonKey(System.Security.Claims.ClaimTypes.NameIdentifier, "nameidentifier");
                 });
             //.AddOpenIdConnect("central", options =>
             //{
