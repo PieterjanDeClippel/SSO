@@ -30,13 +30,13 @@ namespace Sso.Application
             services
                 .AddAuthentication(options =>
                 {
-                    options.DefaultScheme = "cookie";
-                    //options.DefaultScheme = Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationDefaults.AuthenticationScheme;
+                    //options.DefaultScheme = "cookie";
+                    options.DefaultScheme = Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationDefaults.AuthenticationScheme;
                     //options.DefaultAuthenticateScheme = Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = "central";
+                    //options.DefaultChallengeScheme = "central";
                 })
-                //.AddCookie(Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationDefaults.AuthenticationScheme, options =>
-                .AddCookie("cookie", options =>
+                .AddCookie(Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationDefaults.AuthenticationScheme, options =>
+                //.AddCookie("cookie", options =>
                 {
                     options.Cookie.HttpOnly = true;
                     options.ExpireTimeSpan = TimeSpan.FromDays(30);
@@ -44,34 +44,9 @@ namespace Sso.Application
                 })
                 .AddOAuth<CentralOptions, CentralHandler>("central", options =>
                 {
-                    options.ClaimsIssuer = "https://localhost:44359";
                     options.SaveTokens = true;
                     options.ClientId = "SsoApplicationClient";
                     options.ClientSecret = "qsdfghjklm";
-                    options.CallbackPath = new Microsoft.AspNetCore.Http.PathString("/signin-central");
-
-                    options.Scope.Add("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
-                    options.Scope.Add("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name");
-                    options.Scope.Add("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress");
-                    options.Scope.Add("openid");
-                    options.Scope.Add("profile");
-                    options.Scope.Add("email");
-                    options.Scope.Add("phone");
-                    options.Scope.Add("role");
-                    options.Scope.Add("weatherforecasts.read");
-                    options.Scope.Add("weatherforecasts.write");
-
-                    options.UsePkce = true;
-
-                    options.ClaimActions.MapJsonKey("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier", "sub");
-                    options.ClaimActions.MapJsonKey("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name", "name");
-                    options.ClaimActions.MapJsonKey("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress", "email");
-                    //options.ClaimActions.MapJsonKey("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/phone", "phone");
-
-                    //options.ClaimActions.MapJsonKey("sub", "sub");
-                    //options.ClaimActions.MapJsonKey("name", "name");
-                    //options.ClaimActions.MapJsonKey("email", "email");
-                    //options.ClaimActions.MapJsonKey("phone", "phone");
                 });
             //.AddOpenIdConnect("central", options =>
             //{
