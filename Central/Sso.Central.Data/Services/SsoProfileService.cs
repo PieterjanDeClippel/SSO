@@ -18,18 +18,13 @@ namespace Sso.Central.Data.Services
             this.userManager = userManager;
         }
 
-        //IdentityServer4.EntityFramework.Entities.IdentityResourceClaim
-
         public async Task GetProfileDataAsync(ProfileDataRequestContext context)
         {
             var user = await userManager.GetUserAsync(context.Subject);
             var allClaims = await userManager.GetClaimsAsync(user);
-            //var filteredClaims = allClaims.Where(c => context.RequestedClaimTypes.Contains(c.Type));
-            //context.IssuedClaims = filteredClaims.ToList();
-            //allClaims.Add(new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Name, user.UserName));
-            //allClaims.Add(new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Email, user.Email));
-            //allClaims.Add(new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.MobilePhone, user.PhoneNumber));
-            context.IssuedClaims = allClaims.ToList();
+            var filteredClaims = allClaims.Where(c => context.RequestedClaimTypes.Contains(c.Type));
+            // Optionally add more claims or compute them based on the ClaimsPrincipal properties
+            context.IssuedClaims = filteredClaims.ToList();
         }
 
         public async Task IsActiveAsync(IsActiveContext context)
