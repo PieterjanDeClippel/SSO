@@ -26,15 +26,9 @@ namespace Sso.Application
 
             UsePkce = true;
 
-            ClaimActions.MapJsonKey("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier", "sub");
-            ClaimActions.MapJsonKey("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name", "name");
-            ClaimActions.MapJsonKey("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress", "email");
-            //ClaimActions.MapJsonKey("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/phone", "phone");
-
-            //ClaimActions.MapJsonKey("sub", "sub");
-            //ClaimActions.MapJsonKey("name", "name");
-            //ClaimActions.MapJsonKey("email", "email");
-            //ClaimActions.MapJsonKey("phone", "phone");
+            ClaimActions.MapJsonKey(System.Security.Claims.ClaimTypes.NameIdentifier, "sub");
+            ClaimActions.MapJsonKey(System.Security.Claims.ClaimTypes.Name, "name");
+            ClaimActions.MapJsonKey(System.Security.Claims.ClaimTypes.Email, "email");
         }
     }
 }
