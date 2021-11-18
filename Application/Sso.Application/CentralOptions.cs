@@ -22,6 +22,7 @@ namespace Sso.Application
             ClaimActions.MapJsonKey(System.Security.Claims.ClaimTypes.NameIdentifier, "sub");
             ClaimActions.MapJsonKey(System.Security.Claims.ClaimTypes.Name, "name");
             ClaimActions.MapJsonKey(System.Security.Claims.ClaimTypes.Email, "email");
+            ClaimActions.MapJsonKey(System.Security.Claims.ClaimTypes.MobilePhone, "mobilephone");
         }
     }
 }

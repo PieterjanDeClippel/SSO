@@ -40,12 +40,15 @@ namespace Sso.Application.Data.Repositories
             {
                 string username = info.Principal.FindFirstValue(ClaimTypes.Name);
                 string email = info.Principal.FindFirstValue(ClaimTypes.Email);
+                string mobilePhone = info.Principal.FindFirstValue(ClaimTypes.MobilePhone);
 
                 var new_user = new Entities.User
                 {
                     UserName = username,
                     Email = email,
                     EmailConfirmed = true,
+                    PhoneNumber = mobilePhone,
+                    PhoneNumberConfirmed = true,
                 };
                 var id_result = await userManager.CreateAsync(new_user);
                 if (id_result.Succeeded)
@@ -91,6 +94,7 @@ namespace Sso.Application.Data.Repositories
                         Id = user.Id,
                         UserName = user.UserName,
                         Email = user.Email,
+                        Phone = user.PhoneNumber,
                         Bypass2faForExternalLogin = user.Bypass2faForExternalLogin,
                     },
                 };
@@ -106,6 +110,7 @@ namespace Sso.Application.Data.Repositories
                         Id = user.Id,
                         UserName = user.UserName,
                         Email = user.Email,
+                        Phone = user.PhoneNumber,
                         Bypass2faForExternalLogin = user.Bypass2faForExternalLogin,
                     },
                 };

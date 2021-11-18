@@ -35,7 +35,6 @@ namespace Sso.Central.Data.Repositories
         {
             var entity = new Entities.User
             {
-                Id = System.Guid.NewGuid().ToString(),
                 UserName = user.UserName,
                 Email = user.Email,
             };

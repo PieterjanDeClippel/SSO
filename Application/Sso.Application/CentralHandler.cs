@@ -19,68 +19,6 @@ namespace Sso.Application
         {
         }
 
-        protected override async Task InitializeEventsAsync()
-        {
-            await base.InitializeEventsAsync();
-        }
-
-        protected override async Task InitializeHandlerAsync()
-        {
-            await base.InitializeHandlerAsync();
-        }
-
-        protected override string ResolveTarget(string scheme)
-        {
-            var result = base.ResolveTarget(scheme);
-            return result;
-        }
-
-        protected override async Task HandleChallengeAsync(AuthenticationProperties properties)
-        {
-            await base.HandleChallengeAsync(properties);
-        }
-
-        protected override void GenerateCorrelationId(AuthenticationProperties properties)
-        {
-            base.GenerateCorrelationId(properties);
-        }
-
-        protected override string BuildChallengeUrl(AuthenticationProperties properties, string redirectUri)
-        {
-            var challengeUrl = base.BuildChallengeUrl(properties, redirectUri);
-            return challengeUrl;
-        }
-
-        protected override string FormatScope()
-        {
-            var scope = base.FormatScope();
-            return scope;
-        }
-
-        protected override string FormatScope(IEnumerable<string> scopes)
-        {
-            var scope = base.FormatScope(scopes);
-            return scope;
-        }
-
-        // Everything below this line is never called
-        protected override async Task<object> CreateEventsAsync()
-        {
-            var events = await base.CreateEventsAsync();
-            return events;
-        }
-
-        protected override async Task<HandleRequestResult> HandleAccessDeniedErrorAsync(AuthenticationProperties properties)
-        {
-            var result = await base.HandleAccessDeniedErrorAsync(properties);
-            return result;
-        }
-
-        protected override async Task HandleForbiddenAsync(AuthenticationProperties properties)
-        {
-            await base.HandleForbiddenAsync(properties);
-        }
-
         protected override async Task<HandleRequestResult> HandleRemoteAuthenticateAsync()
         {
             var result = await base.HandleRemoteAuthenticateAsync();
@@ -88,24 +26,6 @@ namespace Sso.Application
             //{
             //    //action.Run(payload.RootElement, identity, ClaimsIssuer);
             //}
-            return result;
-        }
-
-        public override async Task<bool> HandleRequestAsync()
-        {
-            var result = await base.HandleRequestAsync();
-            return result;
-        }
-
-        public override async Task<bool> ShouldHandleRequestAsync()
-        {
-            var result = await base.ShouldHandleRequestAsync();
-            return result;
-        }
-
-        protected override bool ValidateCorrelationId(AuthenticationProperties properties)
-        {
-            var result = base.ValidateCorrelationId(properties);
             return result;
         }
 
@@ -119,7 +39,7 @@ namespace Sso.Application
                 RequestUri = new System.Uri(Options.UserInformationEndpoint),
             };
             request.Headers.Add("Authorization", "Bearer " + tokens.AccessToken); // "Bearer" = Case sensitive
-            request.Headers.Add("scope", "openid,profile,email,phone,role,http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier,http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name,http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress");
+            request.Headers.Add("scope", "openid,email,phone");
             var response = await Backchannel.SendAsync(request);
             var content = await response.Content.ReadAsStringAsync();
             if (!response.IsSuccessStatusCode)
@@ -136,18 +56,6 @@ namespace Sso.Application
             await Events.CreatingTicket(context);
 
             return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
-        }
-
-        protected override async Task<OAuthTokenResponse> ExchangeCodeAsync(OAuthCodeExchangeContext context)
-        {
-            var result = await base.ExchangeCodeAsync(context);
-            return result;
-        }
-
-        protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
-        {
-            var result = await base.HandleAuthenticateAsync();
-            return result;
         }
     }
 }

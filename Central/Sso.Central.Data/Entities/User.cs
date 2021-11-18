@@ -3,7 +3,7 @@ using System;
 
 namespace Sso.Central.Data.Entities
 {
-    internal class User : IdentityUser<string>
+    internal class User : IdentityUser<Guid>
     {
     }
 }

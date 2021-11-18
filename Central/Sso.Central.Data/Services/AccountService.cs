@@ -48,14 +48,15 @@ namespace Sso.Central.Data.Services
             try
             {
                 var user = await accountRepository.Login(email, password);
+                var userId = user.Id.ToString();
 
-                await events.RaiseAsync(new UserLoginSuccessEvent(user.UserName, user.Id, user.UserName, clientId: request?.Client.ClientId));
-                var isUser = new IdentityServer4.IdentityServerUser(user.Id)
+                await events.RaiseAsync(new UserLoginSuccessEvent(user.UserName, userId, user.UserName, clientId: request?.Client.ClientId));
+                var isUser = new IdentityServer4.IdentityServerUser(userId)
                 {
                     DisplayName = user.UserName,
                     AdditionalClaims = new[]
                     {
-                        new Claim(ClaimTypes.NameIdentifier, user.Id),
+                        new Claim(ClaimTypes.NameIdentifier, userId),
                         new Claim(ClaimTypes.Name, user.UserName),
                         new Claim(ClaimTypes.Email, user.Email),
                     }
