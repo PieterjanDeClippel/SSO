@@ -13,16 +13,9 @@ namespace Sso.Application
             TokenEndpoint = "https://localhost:44359/connect/token";
             UserInformationEndpoint = "https://localhost:44359/connect/userinfo";
 
-            Scope.Add("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
-            Scope.Add("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name");
-            Scope.Add("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress");
             Scope.Add("openid");
-            Scope.Add("profile");
             Scope.Add("email");
             Scope.Add("phone");
-            Scope.Add("role");
-            Scope.Add("weatherforecasts.read");
-            Scope.Add("weatherforecasts.write");
 
             UsePkce = true;
 
