@@ -16,6 +16,7 @@ namespace Sso.Application
             Scope.Add("openid");
             Scope.Add("email");
             Scope.Add("phone");
+            Scope.Add("information");
 
             UsePkce = true;
 
@@ -23,6 +24,7 @@ namespace Sso.Application
             ClaimActions.MapJsonKey(System.Security.Claims.ClaimTypes.Name, "name");
             ClaimActions.MapJsonKey(System.Security.Claims.ClaimTypes.Email, "email");
             ClaimActions.MapJsonKey(System.Security.Claims.ClaimTypes.MobilePhone, "mobilephone");
+            ClaimActions.MapJsonKey(System.Security.Claims.ClaimTypes.DateOfBirth, "dateofbirth");
         }
     }
 }

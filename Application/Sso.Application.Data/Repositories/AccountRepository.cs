@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
+using Sso.Application.Data.Mappers;
 using System;
 using System.Linq;
 using System.Security.Claims;
@@ -16,12 +17,15 @@ namespace Sso.Application.Data.Repositories
     {
         private readonly SignInManager<Entities.User> signInManager;
         private readonly UserManager<Entities.User> userManager;
+        private readonly IUserMapper userMapper;
         public AccountRepository(
             SignInManager<Entities.User> signInManager,
-            UserManager<Entities.User> userManager)
+            UserManager<Entities.User> userManager,
+            IUserMapper userMapper)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
+            this.userMapper = userMapper;
         }
 
         public Task<AuthenticationProperties> ConfigureExternalAuthenticationProperties(string provider, string redirectUrl)
@@ -38,18 +42,18 @@ namespace Sso.Application.Data.Repositories
             var user = await userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
             if (user == null)
             {
-                string username = info.Principal.FindFirstValue(ClaimTypes.Name);
-                string email = info.Principal.FindFirstValue(ClaimTypes.Email);
-                string mobilePhone = info.Principal.FindFirstValue(ClaimTypes.MobilePhone);
-
                 var new_user = new Entities.User
                 {
-                    UserName = username,
-                    Email = email,
+                    UserName = info.Principal.FindFirstValue(ClaimTypes.Name),
+                    Email = info.Principal.FindFirstValue(ClaimTypes.Email),
                     EmailConfirmed = true,
-                    PhoneNumber = mobilePhone,
+                    PhoneNumber = info.Principal.FindFirstValue(ClaimTypes.MobilePhone),
                     PhoneNumberConfirmed = true,
                 };
+
+                var strDateOfBirth = info.Principal.FindFirstValue(ClaimTypes.DateOfBirth);
+                if (DateTime.TryParse(strDateOfBirth, out var dateOfBirth)) new_user.DateOfBirth = dateOfBirth;
+
                 var id_result = await userManager.CreateAsync(new_user);
                 if (id_result.Succeeded)
                 {
@@ -60,7 +64,7 @@ namespace Sso.Application.Data.Repositories
                     // User creation failed, probably because the email address is already present in the database
                     if (id_result.Errors.Any(e => e.Code == "DuplicateEmail"))
                     {
-                        var existing = await userManager.FindByEmailAsync(email);
+                        var existing = await userManager.FindByEmailAsync(new_user.Email);
                         var existing_logins = await userManager.GetLoginsAsync(existing);
 
                         if (existing_logins.Any())
@@ -89,14 +93,7 @@ namespace Sso.Application.Data.Repositories
                 {
                     Status = Dtos.Enums.ELoginStatus.Success,
                     Provider = info.LoginProvider,
-                    User = new Dtos.Dtos.User
-                    {
-                        Id = user.Id,
-                        UserName = user.UserName,
-                        Email = user.Email,
-                        Phone = user.PhoneNumber,
-                        Bypass2faForExternalLogin = user.Bypass2faForExternalLogin,
-                    },
+                    User = await userMapper.Entity2Dto(user),
                 };
             }
             else if (signinResult.RequiresTwoFactor)
@@ -105,14 +102,7 @@ namespace Sso.Application.Data.Repositories
                 {
                     Status = Dtos.Enums.ELoginStatus.RequiresTwoFactor,
                     Provider = info.LoginProvider,
-                    User = new Dtos.Dtos.User
-                    {
-                        Id = user.Id,
-                        UserName = user.UserName,
-                        Email = user.Email,
-                        Phone = user.PhoneNumber,
-                        Bypass2faForExternalLogin = user.Bypass2faForExternalLogin,
-                    },
+                    User = await userMapper.Entity2Dto(user),
                 };
             }
             else

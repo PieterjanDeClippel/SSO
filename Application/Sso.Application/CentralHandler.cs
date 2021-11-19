@@ -39,7 +39,7 @@ namespace Sso.Application
                 RequestUri = new System.Uri(Options.UserInformationEndpoint),
             };
             request.Headers.Add("Authorization", "Bearer " + tokens.AccessToken); // "Bearer" = Case sensitive
-            request.Headers.Add("scope", "openid,email,phone");
+            request.Headers.Add("scope", "openid,email,phone,information");
             var response = await Backchannel.SendAsync(request);
             var content = await response.Content.ReadAsStringAsync();
             if (!response.IsSuccessStatusCode)

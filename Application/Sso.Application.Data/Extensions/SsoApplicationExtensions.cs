@@ -20,6 +20,7 @@ namespace Sso.Application.Data.Extensions
 
             return services
                 .AddDbContext<SsoApplicationContext>()
+                .AddScoped<Mappers.IUserMapper, Mappers.UserMapper>()
                 .AddScoped<Repositories.IAccountRepository, Repositories.AccountRepository>();
         }
     }

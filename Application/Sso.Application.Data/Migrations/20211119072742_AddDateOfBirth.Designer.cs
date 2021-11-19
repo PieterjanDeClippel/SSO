@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sso.Application.Data;
 
 namespace Sso.Application.Data.Migrations
 {
     [DbContext(typeof(SsoApplicationContext))]
-    partial class SsoApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20211119072742_AddDateOfBirth")]
+    partial class AddDateOfBirth
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
