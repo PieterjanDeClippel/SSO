@@ -12,6 +12,8 @@ namespace Sso.Application.Data.Repositories
     {
         Task<AuthenticationProperties> ConfigureExternalAuthenticationProperties(string provider, string redirectUrl);
         Task<Dtos.Dtos.ExternalLoginResult> PerformExternalLogin();
+        Task<Dtos.Dtos.User> GetCurrentUser(ClaimsPrincipal userProperty);
+        Task Logout();
     }
     internal class AccountRepository : IAccountRepository
     {
@@ -96,15 +98,15 @@ namespace Sso.Application.Data.Repositories
                     User = await userMapper.Entity2Dto(user),
                 };
             }
-            else if (signinResult.RequiresTwoFactor)
-            {
-                return new Dtos.Dtos.ExternalLoginResult
-                {
-                    Status = Dtos.Enums.ELoginStatus.RequiresTwoFactor,
-                    Provider = info.LoginProvider,
-                    User = await userMapper.Entity2Dto(user),
-                };
-            }
+            //else if (signinResult.RequiresTwoFactor)
+            //{
+            //    return new Dtos.Dtos.ExternalLoginResult
+            //    {
+            //        Status = Dtos.Enums.ELoginStatus.RequiresTwoFactor,
+            //        Provider = info.LoginProvider,
+            //        User = await userMapper.Entity2Dto(user),
+            //    };
+            //}
             else
             {
                 return new Dtos.Dtos.ExternalLoginResult
@@ -112,6 +114,18 @@ namespace Sso.Application.Data.Repositories
                     Status = Dtos.Enums.ELoginStatus.Failed,
                 };
             }
+        }
+
+        public async Task<Dtos.Dtos.User> GetCurrentUser(ClaimsPrincipal userProperty)
+        {
+            var user = await userManager.GetUserAsync(userProperty);
+            var dto = await userMapper.Entity2Dto(user);
+            return dto;
+        }
+
+        public async Task Logout()
+        {
+            await signInManager.SignOutAsync();
         }
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Sso.Application.Data.Extensions;
 using System;
+using System.Threading.Tasks;
 
 namespace Sso.Application
 {
@@ -31,6 +32,11 @@ namespace Sso.Application
                     options.Cookie.HttpOnly = true;
                     options.ExpireTimeSpan = TimeSpan.FromDays(30);
                     options.AccessDeniedPath = new Microsoft.AspNetCore.Http.PathString("/AccessDenied");
+                    options.Events.OnRedirectToLogin = (context) =>
+                    {
+                        context.Response.StatusCode = 401;
+                        return Task.CompletedTask;
+                    };
                 })
                 .AddOAuth<CentralOptions, CentralHandler>("central", options =>
                 {
@@ -71,7 +77,6 @@ namespace Sso.Application
 
             app.UseAuthentication();
             app.UseRouting();
-
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {

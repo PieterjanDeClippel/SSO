@@ -20,6 +20,7 @@ namespace Sso.Application.Data.Mappers
                 DateOfBirth = user.DateOfBirth,
                 Email = user.Email,
                 PhoneNumber = user.Phone,
+                //TwoFactorEnabled = user.IsTwoFactorEnabled,
                 Bypass2faForExternalLogin = user.Bypass2faForExternalLogin,
             });
         }
@@ -35,6 +36,7 @@ namespace Sso.Application.Data.Mappers
                 DateOfBirth = user.DateOfBirth,
                 Email = user.Email,
                 Phone = user.PhoneNumber,
+                IsTwoFactorEnabled = user.TwoFactorEnabled,
                 Bypass2faForExternalLogin = user.Bypass2faForExternalLogin,
             });
         }

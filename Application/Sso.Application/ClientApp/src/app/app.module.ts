@@ -4,18 +4,18 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
-import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { AppRoutingModule } from './app-routing.module';
+import { NavMenuModule } from './components/nav-menu/nav-menu.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    NavMenuComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
+    NavMenuModule,
     AppRoutingModule
   ],
   providers: [],

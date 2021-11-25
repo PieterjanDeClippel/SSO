@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { User } from '../../entities/user';
 
 @Component({
   selector: 'app-nav-menu',
@@ -6,7 +7,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./nav-menu.component.css']
 })
 export class NavMenuComponent {
+
   isExpanded = false;
+  @Input() public activeUser!: User | null;
 
   collapse() {
     this.isExpanded = false;
@@ -14,5 +17,10 @@ export class NavMenuComponent {
 
   toggle() {
     this.isExpanded = !this.isExpanded;
+  }
+
+  @Output() public logoutClicked = new EventEmitter();
+  logout() {
+    this.logoutClicked.emit();
   }
 }

@@ -3,7 +3,6 @@
     public enum ELoginStatus
     {
         Failed = 0,
-        Success = 1,
-        RequiresTwoFactor = 2
+        Success = 1
     }
 }
