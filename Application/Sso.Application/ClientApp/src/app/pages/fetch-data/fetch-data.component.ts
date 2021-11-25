@@ -1,9 +1,11 @@
-import { Component, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Component, Inject, OnInit } from '@angular/core';
+import { WeatherForecast } from '../../entities/weather-forecast';
 
 @Component({
   selector: 'app-fetch-data',
-  templateUrl: './fetch-data.component.html'
+  templateUrl: './fetch-data.component.html',
+  styleUrls: ['./fetch-data.component.scss']
 })
 export class FetchDataComponent {
   public forecasts: WeatherForecast[] = [];
@@ -13,11 +15,4 @@ export class FetchDataComponent {
       this.forecasts = result;
     }, error => console.error(error));
   }
-}
-
-interface WeatherForecast {
-  date: string;
-  temperatureC: number;
-  temperatureF: number;
-  summary: string;
 }
