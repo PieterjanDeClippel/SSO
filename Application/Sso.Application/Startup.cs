@@ -28,15 +28,8 @@ namespace Sso.Application
             services.AddRazorPages();
 
             services
-                .AddAuthentication(options =>
-                {
-                    //options.DefaultScheme = "cookie";
-                    options.DefaultScheme = Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationDefaults.AuthenticationScheme;
-                    //options.DefaultAuthenticateScheme = Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationDefaults.AuthenticationScheme;
-                    //options.DefaultChallengeScheme = "central";
-                })
+                .AddAuthentication()
                 .AddCookie(Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationDefaults.AuthenticationScheme, options =>
-                //.AddCookie("cookie", options =>
                 {
                     options.Cookie.HttpOnly = true;
                     options.ExpireTimeSpan = TimeSpan.FromDays(30);
@@ -48,36 +41,6 @@ namespace Sso.Application
                     options.ClientId = "SsoApplicationClient";
                     options.ClientSecret = "qsdfghjklm";
                 });
-            //.AddOpenIdConnect("central", options =>
-            //{
-            //    //options.SignInScheme = Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationDefaults.AuthenticationScheme;
-            //    options.SignInScheme = "cookie";
-
-            //    options.Authority = "https://localhost:44359";
-            //    options.RequireHttpsMetadata = false;
-            //    options.CallbackPath = new Microsoft.AspNetCore.Http.PathString("/signin-central");
-
-            //    options.ClientId = "SsoApplicationClient";
-            //    options.ClientSecret = "qsdfghjklm";
-            //    options.ResponseType = "code";
-            //    options.UsePkce = true;
-            //    //options.ResponseType = "code id_token";
-
-            //    options.SaveTokens = true;
-            //    options.GetClaimsFromUserInfoEndpoint = true;
-
-            //    options.Scope.Add("openid");
-            //    options.Scope.Add("profile");
-            //    options.Scope.Add("weatherforecasts.read");
-            //    options.Scope.Add("weatherforecasts.write");
-
-            //    //options.ClaimActions.MapJsonKey("website", "website");
-
-            //    options.Events.OnUserInformationReceived = (info) =>
-            //    {
-            //        return Task.CompletedTask;
-            //    };
-            //});
 
             services.AddSsoApplication(Configuration);
         }
