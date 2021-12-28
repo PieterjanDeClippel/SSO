@@ -30,7 +30,11 @@
                             <label asp-for="Password"></label>
                             <input type="password" class="form-control" placeholder="Password" asp-for="Password" autocomplete="off">
                         </div>
-                        <button type="submit" class="btn btn-primary" name="button" value="login">Login</button>
+                        <div class="form-group">
+                            <label asp-for="PasswordConfirmation">Confirm password</label>
+                            <input type="password" class="form-control" placeholder="Password" asp-for="PasswordConfirmation" autocomplete="off">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Register</button>
                     </form>
                 </div>
             </div>

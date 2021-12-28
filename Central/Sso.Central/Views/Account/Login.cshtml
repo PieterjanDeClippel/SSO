@@ -28,6 +28,7 @@
                             <input type="password" class="form-control" placeholder="Password" asp-for="Password" autocomplete="off">
                         </div>
                         <button type="submit" class="btn btn-primary" name="button" value="login">Login</button>
+                        @Html.ActionLink("Register", "Register", new { ReturnUrl = Context.Request.Query["ReturnUrl"] })
                     </form>
                 </div>
             </div>

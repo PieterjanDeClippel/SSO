@@ -104,5 +104,48 @@ namespace Sso.Central.Controllers
                 return View(model);
             }
         }
+
+        [HttpGet("Register")]
+        public async Task<IActionResult> Register([FromQuery] string returnUrl)
+        {
+            var model = new ViewModels.Account.RegisterVM { ReturnUrl = returnUrl };
+            return View(model);
+        }
+
+        [HttpPost("Register")]
+        public async Task<IActionResult> RegisterPost([FromForm] ViewModels.Account.RegisterVM model)
+        {
+            try
+            {
+                if (model.Password != model.PasswordConfirmation)
+                {
+                    throw new Exception("Password confirmation does not match");
+                }
+
+                var user = await accountService.Register(model.User, model.Password);
+                var request = await accountService.Login(model.User.Email, model.Password, model.ReturnUrl);
+
+                if (request != null)
+                {
+                    return Redirect(model.ReturnUrl);
+                }
+                else if (Url.IsLocalUrl(model.ReturnUrl))
+                {
+                    return Redirect(model.ReturnUrl);
+                }
+                else if (string.IsNullOrEmpty(model.ReturnUrl))
+                {
+                    return Redirect("~/");
+                }
+                else
+                {
+                    throw new System.Exception("Invalid return url");
+                }
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
+        }
     }
 }
