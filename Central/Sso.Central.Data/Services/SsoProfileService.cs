@@ -1,18 +1,14 @@
-﻿using Duende.IdentityServer.Models;
-using Duende.IdentityServer.Services;
-using Microsoft.AspNetCore.Identity;
-using Sso.Central.Data.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using Duende.IdentityServer.Models;
+using Duende.IdentityServer.Services;
 
 namespace Sso.Central.Data.Services
 {
     internal class SsoProfileService : IProfileService
     {
-        private readonly UserManager<User> userManager;
+        private readonly UserManager<Entities.User> userManager;
         public SsoProfileService(UserManager<Entities.User> userManager)
         {
             this.userManager = userManager;
