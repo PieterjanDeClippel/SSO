@@ -12,13 +12,13 @@ namespace Sso.Application.Data
     {
         #region Constructor
         private readonly IConfiguration configuration;
-        public SsoApplicationContext(IConfiguration configuration)
-        {
-            this.configuration = configuration;
-        }
         public SsoApplicationContext()
         {
             configuration = null;
+        }
+        public SsoApplicationContext(IConfiguration configuration)
+        {
+            this.configuration = configuration;
         }
         #endregion
 

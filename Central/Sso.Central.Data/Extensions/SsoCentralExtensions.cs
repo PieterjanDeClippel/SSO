@@ -1,11 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Duende.IdentityServer;
 
 namespace Sso.Central.Data.Extensions
 {
@@ -96,40 +91,38 @@ namespace Sso.Central.Data.Extensions
                 .AddDeveloperSigningCredential()
                 .AddOperationalStore<SsoCentralContext>(identityServerOptions =>
                 {
-                    //if (configuration == null)
-                    //{
-                    //    var migrationsConnectionString = @"Server=(localdb)\mssqllocaldb;Database=SsoCentral;Trusted_Connection=True;ConnectRetryCount=0";
-                    //    identityServerOptions.ConfigureDbContext = (builder) => builder
-                    //        .UseSqlServer(migrationsConnectionString, options => {
-                    //            options.MigrationsAssembly(typeof(SsoCentralContext).Assembly.FullName);
-                    //        });
-                    //}
-                    //else
-                    //{
-                    //    identityServerOptions.ConfigureDbContext = (builder) => builder
-                    //        .UseSqlServer(configuration.GetConnectionString("SsoCentral"));
-                    //}
-                    identityServerOptions.ConfigureDbContext = (builder) => builder
-                        .UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=SsoCentral;Trusted_Connection=True;ConnectRetryCount=0");
+                    if (configuration == null)
+                    {
+                        var migrationsConnectionString = @"Server=(localdb)\mssqllocaldb;Database=SsoCentral;Trusted_Connection=True;ConnectRetryCount=0";
+                        identityServerOptions.ConfigureDbContext = (builder) => builder
+                            .UseSqlServer(migrationsConnectionString, options =>
+                            {
+                                options.MigrationsAssembly(typeof(SsoCentralContext).Assembly.FullName);
+                            });
+                    }
+                    else
+                    {
+                        identityServerOptions.ConfigureDbContext = (builder) => builder
+                            .UseSqlServer(configuration.GetConnectionString("SsoCentral"));
+                    }
                 })
                 .AddConfigurationStore<SsoCentralContext>(identityServerOptions =>
-                //{
-                //    if (configuration == null)
-                //    {
-                //        var migrationsConnectionString = @"Server=(localdb)\mssqllocaldb;Database=SsoCentral;Trusted_Connection=True;ConnectRetryCount=0";
-                //        identityServerOptions.ConfigureDbContext = (builder) => builder
-                //            .UseSqlServer(migrationsConnectionString, options => {
-                //                options.MigrationsAssembly(typeof(SsoCentralContext).Assembly.FullName);
-                //            });
-                //    }
-                //    else
-                //    {
-                //        identityServerOptions.ConfigureDbContext = (builder) => builder
-                //            .UseSqlServer(configuration.GetConnectionString("SsoCentral"));
-                //    }
+                {
+                    if (configuration == null)
+                    {
+                        var migrationsConnectionString = @"Server=(localdb)\mssqllocaldb;Database=SsoCentral;Trusted_Connection=True;ConnectRetryCount=0";
                         identityServerOptions.ConfigureDbContext = (builder) => builder
-                            .UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=SsoCentral;Trusted_Connection=True;ConnectRetryCount=0")
-                )
+                            .UseSqlServer(migrationsConnectionString, options =>
+                            {
+                                options.MigrationsAssembly(typeof(SsoCentralContext).Assembly.FullName);
+                            });
+                    }
+                    else
+                    {
+                        identityServerOptions.ConfigureDbContext = (builder) => builder
+                            .UseSqlServer(configuration.GetConnectionString("SsoCentral"));
+                    }
+                })
                 .AddAspNetIdentity<Entities.User>()
                 .AddProfileService<Services.SsoProfileService>();
 

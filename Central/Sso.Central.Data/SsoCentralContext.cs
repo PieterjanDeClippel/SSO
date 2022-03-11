@@ -16,13 +16,13 @@ namespace Sso.Central.Data
     {
         #region Constructor
         private readonly IConfiguration configuration;
-        public SsoCentralContext(IConfiguration configuration)
-        {
-            this.configuration = configuration;
-        }
         public SsoCentralContext()
         {
             configuration = null;
+        }
+        public SsoCentralContext(IConfiguration configuration)
+        {
+            this.configuration = configuration;
         }
         #endregion
 
