@@ -1,12 +1,11 @@
-﻿using IdentityServer4.Events;
-using IdentityServer4.Services;
+﻿using Duende.IdentityServer;
+using Duende.IdentityServer.Events;
+using Duende.IdentityServer.Models;
+using Duende.IdentityServer.Services;
 using Microsoft.AspNetCore.Http;
 using Sso.Central.Data.Exceptions;
 using Sso.Central.Data.Repositories;
-using System;
-using System.Collections.Generic;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Sso.Central.Data.Services
@@ -14,7 +13,7 @@ namespace Sso.Central.Data.Services
     public interface IAccountService
     {
         Task<Dtos.Dtos.User> Register(Dtos.Dtos.User user, string password);
-        Task<IdentityServer4.Models.AuthorizationRequest> Login(string email, string password, string redirectUrl);
+        Task<AuthorizationRequest> Login(string email, string password, string redirectUrl);
         //Task AddClientSecret(string clientId, string secret, string description);
     }
 
@@ -42,7 +41,7 @@ namespace Sso.Central.Data.Services
             return newUser;
         }
 
-        public async Task<IdentityServer4.Models.AuthorizationRequest> Login(string email, string password, string redirectUrl)
+        public async Task<AuthorizationRequest> Login(string email, string password, string redirectUrl)
         {
             var request = await interaction.GetAuthorizationContextAsync(redirectUrl);
             try
@@ -51,7 +50,7 @@ namespace Sso.Central.Data.Services
                 var userId = user.Id.ToString();
 
                 await events.RaiseAsync(new UserLoginSuccessEvent(user.UserName, userId, user.UserName, clientId: request?.Client.ClientId));
-                var isUser = new IdentityServer4.IdentityServerUser(userId)
+                var isUser = new IdentityServerUser(userId)
                 {
                     DisplayName = user.UserName,
                     AdditionalClaims = new[]

@@ -1,6 +1,4 @@
-﻿using IdentityServer4.Models;
-using IdentityServer4.Services;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Sso.Central.Data.Exceptions;

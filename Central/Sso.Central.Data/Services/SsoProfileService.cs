@@ -1,5 +1,5 @@
-﻿using IdentityServer4.Models;
-using IdentityServer4.Services;
+﻿using Duende.IdentityServer.Models;
+using Duende.IdentityServer.Services;
 using Microsoft.AspNetCore.Identity;
 using Sso.Central.Data.Entities;
 using System;
@@ -28,11 +28,14 @@ namespace Sso.Central.Data.Services
                     switch (ct)
                     {
                         case "name":
-                            return new System.Security.Claims.Claim("name", user.UserName);
+                            if (string.IsNullOrEmpty(user.UserName)) return null;
+                            else return new System.Security.Claims.Claim("name", user.UserName);
                         case "email":
-                            return new System.Security.Claims.Claim("email", user.Email);
+                            if (string.IsNullOrEmpty(user.Email)) return null;
+                            else return new System.Security.Claims.Claim("email", user.Email);
                         case "mobilephone":
-                            return new System.Security.Claims.Claim("mobilephone", user.PhoneNumber);
+                            if (string.IsNullOrEmpty(user.PhoneNumber)) return null;
+                            else return new System.Security.Claims.Claim("mobilephone", user.PhoneNumber);
                         default:
                             return allClaimsFromDatabase.FirstOrDefault(c => c.Type == ct);
                     }

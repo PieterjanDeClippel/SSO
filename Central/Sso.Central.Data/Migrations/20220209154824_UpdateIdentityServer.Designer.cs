@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sso.Central.Data;
 
@@ -11,9 +12,10 @@ using Sso.Central.Data;
 namespace Sso.Central.Data.Migrations
 {
     [DbContext(typeof(SsoCentralContext))]
-    partial class SsoCentralContextModelSnapshot : ModelSnapshot
+    [Migration("20220209154824_UpdateIdentityServer")]
+    partial class UpdateIdentityServer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

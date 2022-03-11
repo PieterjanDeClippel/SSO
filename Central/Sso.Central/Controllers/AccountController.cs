@@ -1,6 +1,5 @@
-﻿using IdentityServer4.Events;
-using IdentityServer4.Services;
-using IdentityServer4.Stores;
+﻿using Duende.IdentityServer.Services;
+using Duende.IdentityServer.Stores;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -21,15 +20,15 @@ namespace Sso.Central.Controllers
         private readonly IClientStore clientStore;
         private readonly IIdentityServerInteractionService interaction;
         private readonly IAccountService accountService;
-        private readonly IdentityServer4.Validation.ITokenValidator tokenValidator;
+        private readonly Duende.IdentityServer.Validation.ITokenValidator tokenValidator;
         private readonly IServiceProvider serviceProvider;
-        private readonly IdentityServer4.Hosting.IEndpointHandler endpointHandler;
+        private readonly Duende.IdentityServer.Hosting.IEndpointHandler endpointHandler;
         public AccountController(
             IEventService events,
             IClientStore clientStore,
             IIdentityServerInteractionService interaction,
             IAccountService accountService,
-            IdentityServer4.Validation.ITokenValidator tokenValidator,
+            Duende.IdentityServer.Validation.ITokenValidator tokenValidator,
             IServiceProvider serviceProvider)
         {
             this.events = events;
